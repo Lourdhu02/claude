@@ -1,0 +1,5 @@
+{"question": "How many people live in Tokyo, and what is that divided by 100?", "must_contain": ["13.9", "139"], "rubric": "Final answer should mention ~13.96 million for Tokyo and ~139000 (or 0.1396 million) for the divided result. Citation required."}
+{"question": "What is the speed of light in km/s?", "must_contain": ["299792", "299,792"], "rubric": "Convert m/s to km/s correctly: 299,792.458 km/s (or ~299,792). Citation to the constant required."}
+{"question": "What is the combined population of Paris and Lagos in millions?", "must_contain": ["17.5", "17.4", "17.6"], "rubric": "Should add ~2.10M + ~15.4M ≈ 17.5M. Both source citations required."}
+{"question": "Compute sqrt(144) plus 17 times 23.", "must_contain": ["403"], "rubric": "sqrt(144)=12, 17*23=391, total 403. Should use the calculator tool, not guess."}
+{"question": "At what temperature does water boil in Fahrenheit?", "must_contain": ["212"], "rubric": "212°F at 1 atm. Citation acceptable from the curated index."}
