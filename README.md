@@ -158,3 +158,8 @@ claude/
 ## License
 
 MIT — see [LICENSE](./LICENSE).
+
+## Claude Projects
+- Prompts
+- Workflows
+- Integration
