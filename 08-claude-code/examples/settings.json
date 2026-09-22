@@ -1,0 +1,30 @@
+{
+  "model": "claude-sonnet-4-6",
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$(date -Iseconds) $CLAUDE_CODE_COMMAND\" >> .claude/bash-log.csv"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -m ruff check ${CLAUDE_CODE_FILEPATH} || true"
+          }
+        ]
+      }
+    ]
+  }
+}

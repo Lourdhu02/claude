@@ -100,6 +100,22 @@ flowchart LR
 
 ---
 
+## What you'll build
+
+This course doesn't end with theory. By Module 10 you'll have built and shipped a real CLI application — a **Research Assistant** — that answers questions by planning, searching, calculating, reading documents, and citing sources, then reports back with a structured, citable answer.
+
+| Milestone | What you'll have |
+|---|---|
+| Day 1 | A working CLI that talks to Claude — your first real request, end to end |
+| Day 2 | Three tools wired in (search, calculator, document reader); forced structured output |
+| Day 3 | A multi-model agent: Haiku subagents for search, Sonnet orchestrator for planning |
+| Day 4 | An eval suite of 20+ questions with an LLM-as-judge grader and CSV scores |
+| Day 5 | Guardrails (input cap, untrusted-content quarantine, output redaction) and a polished streaming CLI |
+
+The full spec is in [Module 10 — Capstone](./10-capstone/). The starter code is already in [`10-capstone/app/`](./10-capstone/app/) — each file has a `# TODO` for the work you do.
+
+---
+
 ## Setup
 
 ```bash
@@ -187,6 +203,31 @@ claude/
 - **Mermaid for diagrams.** Renders in GitHub natively — no images to manage.
 - **Tables over walls of prose** when comparing options.
 - **Footnotes for sources.** Every claim that quotes a limit, price, or capability links to the docs.
+
+---
+
+## Troubleshooting & FAQ
+
+**I get a 401 / "invalid API key" error.**
+Your `ANTHROPIC_API_KEY` is missing, expired, or not loaded. Check: (1) `.env` exists and has a real key (starts with `sk-ant-`), not the `«redacted:…»` placeholder. (2) You restarted the Jupyter kernel after creating `.env` — the SDK reads the env at import time. (3) The key hasn't been revoked at <https://console.anthropic.com/settings/keys>.
+
+**I get a 429 / rate limit error.**
+You've hit a rate limit or run out of billing credit. Check: (1) billing credit at <https://console.anthropic.com/settings/plans-billing> — without credit, requests 429. (2) If you're looping quickly, add a retry with backoff — the SDK's `tenacity` integration handles this, or see Module 02 for a manual retry pattern. (3) You may be on a free tier with strict limits; check your plan.
+
+**Which model should I use?**
+Start with `claude-sonnet-4-6` — it's the default in `.env.example` for a reason. Use Haiku (`claude-haiku-4-5-20251001`) for cheap, fast, simple tasks. Use Opus (`claude-opus-4-7`) only when the task genuinely needs the highest reasoning ability and the cost is justified. See the [model cheat sheet](#model-cheat-sheet) above.
+
+**Do I need to pay for this course?**
+No — the course content (READMEs, labs, exercises) is free to read. You only pay for your own API usage when running the labs. Anthropic has a free tier; check <https://console.anthropic.com/settings/plans-billing> for current pricing. A few labs may cost a few cents each; the capstone could cost a few dollars if you run the full eval suite.
+
+**I don't have an API key yet. Can I still follow the course?**
+Yes. Every module's README explains the concepts without requiring a live call. The labs need a key, but you can read them to understand what they do, then run them when you're ready. Get a key at <https://console.anthropic.com/settings/keys>.
+
+**The lab notebook won't start (Jupyter errors).**
+Make sure you activated the virtualenv *before* running `jupyter lab`. On Windows: `.venv\Scripts\activate` then `jupyter lab`. On macOS/Linux: `source .venv/bin/activate` then `jupyter lab`. If the kernel selector in Jupyter doesn't show a Python kernel, run `python -m ipykernel install --user --name=.venv` from the activated venv.
+
+**Something in the course is outdated (wrong model name, wrong API field).**
+Anthropic updates the API regularly. Open an issue at <https://github.com/Lourdhu02/claude/issues> with what you found and what you think is correct — or submit a PR. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ---
 

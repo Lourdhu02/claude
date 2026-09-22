@@ -273,6 +273,94 @@ A productive setup for studying:
 
 ---
 
+## 13. Custom skills — a worked example
+
+A skill is a directory with a `SKILL.md` and optional supporting files. The harness reads `SKILL.md` and makes the skill available under `/skills/<name>`. Here's a complete, copy-pasteable example you can drop into your repo.
+
+**File**: `.claude/skills/triage/SKILL.md` (project-scoped) or `~/.claude/skills/triage/SKILL.md` (user-scoped):
+
+```markdown
+---
+description: Triage a Linear, GitHub, or Jira issue by URL. Classify it and suggest next steps.
+---
+
+You are a triage assistant.
+
+The user will give you a URL to an issue or ticket. Your job:
+
+1. Read the issue content (fetch the URL if you have web access, or ask the user to paste the body).
+2. Classify it: **bug** / **feature** / **question** / **other**.
+3. Assess severity for bugs: **critical** (data loss, security, downtime), **major** (core feature broken), **minor** (edge case, cosmetic).
+4. Suggest: who should own it (if the project has teams), what to check first, and whether it needs a repro.
+5. If it's a bug, suggest the smallest repro step you can infer.
+
+Keep the reply short — 4–8 sentences. Use bullets for the classification and suggestion.
+
+If the URL is unreachable or the body is empty, ask the user to paste the issue text.
+```
+
+**What makes this a good skill**:
+- The frontmatter `description` tells the harness when to offer it automatically.
+- The prompt is specific about output format and length — good skills constrain the answer, not just the task.
+- It handles the empty/reachable case explicitly rather than failing silently.
+
+**Test it**: drop the file, restart Claude Code, then type `/skills/triage` and pass a URL. Review the output; iterate on the prompt if it's too verbose or misses the classification.
+
+> For the full skill schema and authoring guide, see the [Claude Code skills docs](https://docs.claude.com/en/docs/claude-code/skills).
+
+---
+
+## 14. A starter hooks configuration
+
+Hooks let you run shell commands at key points in the agent loop. Here's a realistic `settings.json` that logs every bash command to a file and runs a formatter check after any file edit.
+
+**File**: `.claude/settings.json` (project-scoped, commit this one):
+
+```jsonc
+{
+  "model": "claude-sonnet-4-6",
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$(date -Iseconds) $CLAUDE_CODE_COMMAND\" >> .claude/bash-log.csv"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -m ruff check ${CLAUDE_CODE_FILEPATH} || true"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**What this does**:
+- **PreToolUse on Bash**: every command the agent runs gets logged to `.claude/bash-log.csv` with a timestamp. Useful for audit, debugging, or later review.
+- **PostToolUse on Edit**: after any file edit, runs `ruff check` on the edited file. The `|| true` means a lint failure won't block the agent — it just reports it. Replace `ruff` with your own linter; the pattern is what matters.
+
+**Important**: hooks run in the project directory. Keep them fast — a hook that takes more than a few seconds will slow every tool call. Avoid network calls in hot hooks.
+
+**Local overrides**: put machine-specific values (personal API keys used by hooks, local paths) in `.claude/settings.local.json` and keep it gitignored. The harness merges: user → project → local.
+
+> For the full hook schema and event list, see [Claude Code hooks](https://docs.claude.com/en/docs/claude-code/hooks).
+
+---
+
 ## References
 
 - Claude Code overview: <https://docs.claude.com/en/docs/claude-code/overview>
