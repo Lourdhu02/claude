@@ -4,7 +4,7 @@ All notable changes to this course are documented here. Format is loosely based 
 
 ---
 
-## [Unreleased]
+## [2026-09-22]
 
 ### Added
 - `prompts.md` — reusable system prompt library (code assistant, data analysis, creative writing, document Q&A, brainstorming, generic)
@@ -23,6 +23,10 @@ All notable changes to this course are documented here. Format is loosely based 
 
 ### Fixed
 - README footer: replaced dangling "Claude Projects: Prompts, Workflows, Integration" stubs with a real assets table
+
+---
+
+## [Unreleased]
 
 ---
 

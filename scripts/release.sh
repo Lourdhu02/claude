@@ -69,34 +69,34 @@ else
 fi
 
 TITLE="Claude course — $(date -u +"%B %Y")"
-NOTES_FILE=$(mktemp)
-trap 'rm -f "$NOTES_FILE"' EXIT
 
-{
-  echo "## What's new — $TAG"
-  echo ""
-  echo "$UNRELEASED"
-  echo ""
-  echo "---"
-  echo ""
-  echo "_Automatically generated from [CHANGELOG.md](../CHANGELOG.md)._"
-} > "$NOTES_FILE"
+# Build release notes and pipe them directly to gh via stdin.
+# (Using stdin avoids temp-file cleanup races on Windows/MSYS.)
+NOTES=$(cat <<EOF
+## What's new — $TAG
+
+$UNRELEASED
+
+---
+
+_Automatically generated from [CHANGELOG.md](../CHANGELOG.md)._
+EOF
+)
 
 if [[ "$DRY_RUN" == true ]]; then
   echo "=== DRY RUN ==="
   echo "Tag      : $TAG"
   echo "Title    : $TITLE"
-  echo "Notes    : $NOTES_FILE"
   echo ""
   echo "Release notes preview:"
   echo "---"
-  cat "$NOTES_FILE"
+  echo "$NOTES"
   echo "---"
   echo ""
   echo "Would run:"
   echo "  git tag -a $TAG -m 'Release $TAG'"
   echo "  git push origin $TAG"
-  echo "  gh release create $TAG --title '$TITLE' --notes-file $NOTES_FILE --verify-tag"
+  echo "  gh release create $TAG --title '$TITLE' --verify-tag"
   exit 0
 fi
 
@@ -112,8 +112,9 @@ git push origin "$TAG"
 
 gh release create "$TAG" \
   --title "$TITLE" \
-  --notes-file "$NOTES_FILE" \
-  --verify-tag
+  --verify-tag <<EOF
+$NOTES
+EOF
 
 echo ""
 echo "Released: https://github.com/Lourdhu02/claude/releases/tag/$TAG"
