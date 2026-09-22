@@ -9,6 +9,20 @@ All notable changes to this course are documented here. Format is loosely based 
 ### Added
 - `prompts.md` — reusable system prompt library (code assistant, data analysis, creative writing, document Q&A, brainstorming, generic)
 - `workflows.md` — step-by-step workflows for code review, documentation generation, testing, and debugging
+- `CONTRIBUTING.md` — how to report issues, suggest modules, run labs, submit PRs
+- `SECURITY.md` — private vulnerability reporting policy
+- `ROADMAP.md` — current priorities, next-month and quarterly plans, longer-term ideas
+- `08-claude-code/examples/skills/triage/SKILL.md` — copy-pasteable triage skill example
+- `08-claude-code/examples/settings.json` — copy-pasteable hooks configuration (bash logger + post-edit linter)
+- `.github/workflows/monthly-release.yml` — GitHub Actions workflow: cuts a monthly release on the 1st from the CHANGELOG's Unreleased section
+- `scripts/release.sh` — manual release CLI (`--dry-run`, `--version`, no args)
+
+### Changed
+- README: ASCII banner (title + tagline), Shields badges (Python, MIT, SDK, Jupyter), features strip, **What you'll build** milestone table, **Troubleshooting & FAQ** (7 Q&As), **Claude Projects** table linking to prompts.md and workflows.md
+- Module 08 README: new sections 13 (custom skill worked example) and 14 (starter hooks configuration), with inline examples and "what makes this good" notes
+
+### Fixed
+- README footer: replaced dangling "Claude Projects: Prompts, Workflows, Integration" stubs with a real assets table
 
 ---
 
