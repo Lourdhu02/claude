@@ -1,0 +1,88 @@
+name: Monthly Release
+
+# Runs on the 1st of every month at 09:00 UTC.
+# Creates a GitHub Release tagged with the current month (YYYY-MM),
+# using the CHANGELOG's "Unreleased" section as release notes.
+#
+# If the "Unreleased" section is empty, the job skips with a note
+# rather than creating an empty release.
+#
+# Put the repo's ANTHROPIC_API_KEY (if any) in the repo secrets only if
+# the release notes reference it — this workflow does not use it.
+
+on:
+  schedule:
+    - cron: "0 9 1 * *"   # 1st of every month, 09:00 UTC
+  workflow_dispatch:      # also allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find the Unreleased section
+        id: changelog
+        run: |
+          set -euo pipefail
+
+          # Extract the "Unreleased" block from CHANGELOG.md
+          UNRELEASED=$(awk '
+            /^## \[Unreleased\]/ { in_section=1; next }
+            /^## \[/ { in_section=0 }
+            in_section { print }
+          ' CHANGELOG.md | sed '/^$/d')
+
+          if [ -z "$UNRELEASED" ]; then
+            echo "no_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Nothing in the Unreleased section — skipping release."
+            exit 0
+          fi
+
+          echo "no_changes=false" >> "$GITHUB_OUTPUT"
+
+          # The (YYYY-MM-DD) tag for this release — 1st of the current month
+          TAG=$(date -u +"%Y-%m-%d")
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+          # Build a release-note body: header + the Unreleased lines
+          {
+            echo "## What's new — $TAG"
+            echo ""
+            echo "$UNRELEASED"
+            echo ""
+            echo "---"
+            echo ""
+            echo "_Automatically generated from [CHANGELOG.md](../CHANGELOG.md)._"
+          } > release-notes.md
+
+          # (also plop it as an env var for the next step)
+          echo "body<<EOF" >> "$GITHUB_ENV"
+          cat release-notes.md >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+
+      - name: Tag and release
+        if: steps.changelog.outputs.no_changes == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "${{ steps.changelog.outputs.tag }}" \
+            -m "Release $(date -u +"%Y-%m") — $(git log --oneline -1)"
+
+          git push origin "${{ steps.changelog.outputs.tag }}"
+
+          # Create the GitHub Release from the tagged commit + release notes
+          gh release create "${{ steps.changelog.outputs.tag }}" \
+            --title "Claude course — $(date -u +"%B %Y")" \
+            --notes-file release-notes.md \
+            --verify-tag
+
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

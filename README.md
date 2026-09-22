@@ -2,10 +2,30 @@
 
 A self-paced course covering the Claude API, Agent SDK, MCP, and the Claude Code CLI. Built for engineers who want production-grade fluency, not just demos.
 
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  ██████╗██╗   ██╗██████╗  ██████╗ ███████╗███╗   ██╗██╗████████╗║
+║  ██╔════╝██║   ██║██╔══██╗██╔═══██╗██╔════╝████╗  ██║██║╚══██╔══╝║
+║  ███████╗██║   ██║██████╔╝██║   ██║███████╗██╔██╗ ██║██║   ██║   ║
+║  ╚════██║██║   ██║██╔══██╗██║   ██║╚════██║██║╚██╗██║██║   ██║   ║
+║  ██████╔╝╚██████╔╝██║  ██║╚██████╔╝███████║██║ ╚████║██║   ██║   ║
+║  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═╝   ╚═╝   ║
+║                                                                  ║
+║  Claude API · Agent SDK · MCP · Claude Code · Evals · Production║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![Anthropic SDK](https://img.shields.io/badge/SDK-anthropic-orange.svg)](https://github.com/anthropic-ai/sdk)
 [![Jupyter](https://img.shields.io/badge/labs-jupyter-977AC8.svg)](https://jupyter.org/)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 10 modules  ·  6 prompt templates  ·  4 workflows  ·  MIT licensed  │
+│ 00 Foundations → 10 Capstone  ·  Labs + exercises in every module   │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 > Author note: this is my personal learning track. Each module is a focused lesson + a runnable lab + exercises. Work through them in order, or jump to a topic.
 
