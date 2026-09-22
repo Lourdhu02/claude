@@ -2,7 +2,42 @@
 
 A self-paced course covering the Claude API, Agent SDK, MCP, and the Claude Code CLI. Built for engineers who want production-grade fluency, not just demos.
 
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![Anthropic SDK](https://img.shields.io/badge/SDK-anthropic-orange.svg)](https://github.com/anthropic-ai/sdk)
+[![Jupyter](https://img.shields.io/badge/labs-jupyter-977AC8.svg)](https://jupyter.org/)
+
 > Author note: this is my personal learning track. Each module is a focused lesson + a runnable lab + exercises. Work through them in order, or jump to a topic.
+
+---
+
+## 5-minute quick start
+
+If you have an API key and Python installed, you can make your first Claude request in under 5 minutes:
+
+```bash
+# Clone and enter the repo
+git clone https://github.com/Lourdhu02/claude.git
+cd claude
+
+# Create a virtualenv and install deps
+python -m venv .venv
+.venv/Scripts/activate        # Windows
+# source .venv/bin/activate   # macOS / Linux
+pip install -r requirements.txt
+
+# Paste your key into .env
+cp .env.example .env
+# → open .env and replace «redacted:sk-…» with your key
+
+# Run the first lab
+jupyter lab
+# → open 00-foundations/lab.ipynb and run the cells
+```
+
+That's it. The first lab sends a request and prints the response. From there, work through Module 00's README for the concepts.
+
+> **No key yet?** You can still read the READMEs — every module explains the concepts without requiring a live API call. Get a key at <https://console.anthropic.com/settings/keys> when you're ready to run the labs.
 
 ---
 
@@ -160,6 +195,13 @@ claude/
 MIT — see [LICENSE](./LICENSE).
 
 ## Claude Projects
-- Prompts
-- Workflows
-- Integration
+
+This repo now includes reusable assets you can copy into your own projects:
+
+| Asset | File | What it is |
+|---|---|---|
+| Prompt library | [`prompts.md`](./prompts.md) | 6 ready-to-use system prompts: code assistant, data analysis, creative writing, document Q&A, brainstorming, generic |
+| Workflow library | [`workflows.md`](./workflows.md) | 4 step-by-step workflows: code review, documentation generation, testing, debugging |
+| Integration | [Module 07 — MCP](./07-mcp/) + [Module 08 — Claude Code](./08-claude-code/) | Connect Claude to your tools and IDE |
+
+Use them as-is, adapt them, or use them as a starting point for your own prompts and workflows.
